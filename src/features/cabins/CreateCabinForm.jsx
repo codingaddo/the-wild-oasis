@@ -149,10 +149,13 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*" 
+        <FileInput 
+        id="image" 
+        accept="image/*" 
         disabled={isCreating}
-        type="file"
-        {...register('image',{required:'This field is required'})} 
+        // type="file"
+        {...register('image',
+        {required:'This field is required'})} 
         />
         {/* {errors?.image?.message && <Error>{errors.image.message}</Error>} */}
       </FormRow>
