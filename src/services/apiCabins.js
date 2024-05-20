@@ -19,7 +19,7 @@ export async function getCabins(){
 export async function createCabin(newCabin){
     //1.Create carbin
 
-    const imageName = `${Math.random()}_${newCabin.image.name}`.replaceAll('/','')
+    const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll('/','')
     const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`
     
     const { data, error } = await supabase
