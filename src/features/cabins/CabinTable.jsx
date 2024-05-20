@@ -27,7 +27,7 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-
+//using react query to get the data by calling the getCabins function
 const CabinTable = () => {
   const {isLoading , data:cabins, error} = useQuery({
     queryKey:['cabins'],
