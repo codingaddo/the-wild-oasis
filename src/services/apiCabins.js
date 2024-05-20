@@ -40,7 +40,6 @@ export async function createCabin(newCabin){
     .from('cabin-images')
     .upload(imagePath, newCabin.image)
 
-  
   //3. Delete the cabin if there was an error uploading the image
 //   if(storageError){
 //     await supabase
@@ -51,8 +50,6 @@ export async function createCabin(newCabin){
 //     console.error(storageError)
 //     throw new Error('Cabin image could not be uploaded and the cabin was not created')
 //   }
-
-
     return data
 
 }
