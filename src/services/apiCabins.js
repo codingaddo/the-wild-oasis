@@ -20,7 +20,6 @@ export async function createEditCabin(newCabin, id){
     //1.creatin cabin image and path
     const imageName = `${newCabin.image.name}`.replaceAll("/","")
     const imagePath = hasImagePath ? newCabin.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`
-    console.log('image name = ' + newCabin.image.name)
     
     //create/Edit a Cabin
     let query = supabase.from('cabins')
