@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Logo from './Logo'
 import MainNav from './MainNav'
+import { useCabin } from '../features/cabins/useCabin'
 
 const StyledSidebar = styled.aside`
     background-color: var(--color-grey-0);
@@ -14,6 +15,7 @@ const StyledSidebar = styled.aside`
 `
 
 const SideBar = () => {
+  const {isLoadin,cabins} = useCabin()
   return (
     <StyledSidebar>
             <Logo/>

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import {formatCurrency} from '../../utils/helpers'
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
+import { HiPencil, HiPencilSquare, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -48,21 +48,36 @@ const Discount = styled.div`
 
 
 const CabinRow = ({cabin}) => {
+
   const [showForm, setShowForm] = useState(false)
-  const {id:cabinId, image,name,maxCapacity, regularPrice, discount} = cabin
+  const {id:cabinId, image,name,maxCapacity, regularPrice, discount,description} = cabin
+  const {isDeleting,deleteCabin} = useDeleteCabin() // Custome hook to delete cabin
+  const {isCreating,createCabin}=useCreateCabin()
 
-  const queryClient = useQueryClient() // getting the query client from app.js
+  function handleDuplicate(){
+    createCabin({
+      name:`Copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description
+    })
+  }
 
-  const {isLoading:isDeleting,mutate} = useMutation({
-    mutationFn:(id) => deleteCabin(id),
-    onSuccess:()=>{
-        toast.success('Cabin deleted successfully')
-        queryClient.invalidateQueries({
-          queryKey:['cabins']
-        })
-    },
-    onError: (err) => toast.error(err.message)
-  })
+  // const queryClient = useQueryClient() // getting the query client from app.js
+  // const {isLoading:isDeleting,mutate:deleteCabin} = useMutation({
+  //   mutationFn:(id) => deleteCabinApi(id),
+  //   onSuccess:()=>{
+  //       toast.success('Cabin deleted successfully')
+  //       queryClient.invalidateQueries({
+  //         queryKey:['cabins']
+  //       })
+  //   },
+  //   onError: (err) => toast.error(err.message)
+  // })
+  
+
   return (
     <>
     <TableRow role="row">
@@ -70,10 +85,16 @@ const CabinRow = ({cabin}) => {
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
+      {
+        discount ?
+      (<Discount>{formatCurrency(discount)}</Discount>)
+      :
+      <span>&mdash;</span>
+      }
       <div>
-        <button onClick={()=>setShowForm(showForm=>!showForm)}>Edit</button>
-      <button onClick={()=>mutate(cabinId)} disabled={isDeleting}>Delete</button>
+        <button onClick={handleDuplicate} disabled={isCreating}><HiSquare2Stack/></button>
+      <button onClick={()=>setShowForm(showForm=>!showForm)}><HiPencil/></button>
+      <button onClick={()=>deleteCabin(cabinId)} disabled={isDeleting}><HiTrash/></button>
       </div>
 
     </TableRow>
