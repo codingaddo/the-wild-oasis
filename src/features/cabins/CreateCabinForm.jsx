@@ -44,7 +44,7 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({cabinToEdit = {} }) {
+function CreateCabinForm({cabinToEdit = {},onCloseModal }) {
   const {id:editId, ...editValues} = cabinToEdit  //geting the cabin to edit values
   const isEditSession = Boolean(editId) // conveting the edited row id to boolean
 
@@ -100,12 +100,14 @@ function CreateCabinForm({cabinToEdit = {} }) {
     if(isEditSession)editCabin({newCabinData:{...data,image:image},id:editId},{
       onSuccess:(data)=>{
         reset()
+        onCloseModal?.()
       }
     })
       else
     createCabin({...data,image:image},{
       onSuccess:(data)=>{
         reset()
+        onCloseModal?.()
       }
   })
 
@@ -116,7 +118,7 @@ function CreateCabinForm({cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={onCloseModal ? 'modal' : 'regular'}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
         <Input type="text" id="name"
@@ -197,7 +199,7 @@ function CreateCabinForm({cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" disabled={isWorking} type="reset">
+        <Button variation="secondary" disabled={isWorking} type="reset" onClick={()=>onCloseModal?.()}>
           Cancel
         </Button>
         <Button disabled={isWorking}>{isEditSession? 'Edit Cabin':'Create Cabin'}</Button>
