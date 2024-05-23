@@ -24,6 +24,7 @@ import Modal from '../../ui/Modal'
 function AddCabin(){
     
      return(
+    <div>
      <Modal>
         <Modal.Open opens='cabin-form'>
             <Button>Add New Cabin</Button>
@@ -31,7 +32,9 @@ function AddCabin(){
         <Modal.Window name='cabin-form'>
             <CreateCabinForm/>
         </Modal.Window>
-     </Modal>)
+     </Modal>
+    </div>
+     )
 }
 
 export default AddCabin
