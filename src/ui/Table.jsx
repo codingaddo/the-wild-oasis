@@ -88,8 +88,18 @@ function Row({children}){
     </StyledRow>
   )
 }
-function Body({children}){
+function Body({data, render}){
   const {columns} = useContext(TableContext)
+
+  if(!data.length) return <Empty>
+    No data to display at the  Moment.
+  </Empty>
+
+  return(
+    <StyledBody>
+      {data.map(render)}
+    </StyledBody>
+  )
 
 }
 // function Footer({children}){}
