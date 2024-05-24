@@ -3,6 +3,7 @@ import CabinRow from "./CabinRow";
 import { useCabin } from "./useCabin";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { useSearchParams } from 'react-router-dom';
 
 
 
@@ -14,8 +15,25 @@ const CabinTable = () => {
   // })
 
   const {isLoading, cabins} = useCabin()
-
+  const [searchParams] = useSearchParams() // using search params hook to get the url of the cabins
+  
   if(isLoading) return <Spinner/>
+  
+  //1. For filtering
+  const filterValue = searchParams.get('discount') || 'all' // getting the url or field name
+  let filteredCabins
+
+  if(filterValue === 'all') filteredCabins = cabins
+  if(filterValue === 'no-discount')  filteredCabins = cabins.filter((cabin)=>cabin.discount === 0)
+  if(filterValue === 'with-discount')  filteredCabins = cabins.filter((cabin)=>cabin.discount > 0)
+
+    //2. For sorting
+
+    const sortBy = searchParams.get('sortBy') || 'startDate-asc'
+    const [field, direction] = sortBy.split('-') //splitting the field name and the direction (eg.maxCapacity-asc)
+    const modifier = direction === 'asc' ? 1 : -1 // checking if the direction ascending or descending
+    const sortedCabins = filteredCabins.sort((a,b)=> (a[field]-b[field]) * modifier) //performing sort operation of the filtered cabin
+
   return (
     <Menus>
 
@@ -28,7 +46,11 @@ const CabinTable = () => {
         <div>Discount</div>
         <div></div>
       </Table.Header>
-      <Table.Body data={cabins} render={(cabin)=> <CabinRow cabin={cabin} key={cabin.id}/>}/>
+      <Table.Body 
+      // data={cabins} 
+      // data={filteredCabins} 
+      data={sortedCabins} 
+      render={(cabin)=> <CabinRow cabin={cabin} key={cabin.id}/>}/>
       
     </Table>
     </Menus>
