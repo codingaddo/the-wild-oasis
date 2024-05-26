@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 
 export function useBookings(){
+  const queryClient = useQueryClient()
   const [searchParams] = useSearchParams()
 
   //Fillter the data from the url
@@ -25,5 +26,10 @@ export function useBookings(){
         queryFn:()=>getBookings({filter, sortBy,page})
       })
 
+      // Pre - fectching
+      queryClient.prefetchQuery({
+        ueryKey:['bookings',filter, sortBy,page+1], //Whenever the filter changes the data would be refetched
+        queryFn:()=>getBookings({filter, sortBy, page:page+1})
+}) 
       return {isLoading,bookings,error,count}
 }
