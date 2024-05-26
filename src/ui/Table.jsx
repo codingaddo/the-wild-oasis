@@ -88,7 +88,7 @@ function Row({children}){
     </StyledRow>
   )
 }
-function Body({data, render}){
+function Body({data={}, render}){
   const {columns} = useContext(TableContext)
 
   if(!data.length) return <Empty>
