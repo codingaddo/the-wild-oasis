@@ -1,26 +1,34 @@
+import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./superbase";
 
 
-export async function getBookings({filter, sortBy}){
+export async function getBookings({filter, sortBy, page}){
   let query = supabase
   .from('bookings')
-  .select("*,guests(fullName, email),cabins(name)")
+  .select("*,guests(fullName, email),cabins(name)",{count:'exact'})//the count attributes get the total number of data
 
   //Api Filter
   if(filter)query = query[filter.method || 'eq'](filter.field,filter.value,)
 
     //Api Sorting
-    if(sortBy) query.order(sortBy.field,{ascending:sortBy.direction === 'asc'})
+    if(sortBy) query.order(sortBy.field,{ascending:sortBy.direction === 'asc'}) // Order is a supabase method
 
-  const {data, error} = await query
+      //Api Pagination
+      if(page){
+        const from = (page - 1)* PAGE_SIZE
+        const to = from + PAGE_SIZE - 1
+        query.range(from , to) // range is a supabase method
+      }
+
+  const {data, error,count} = await query
 
   if(error){
     console.error(error.message)
     throw new Error('Cabins bookings could not be found')
   }
   
-return data;
+return {data, count};
 }
 export async function getBooking(id) {
   const { data, error } = await supabase
