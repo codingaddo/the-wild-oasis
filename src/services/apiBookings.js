@@ -2,17 +2,24 @@ import { getToday } from "../utils/helpers";
 import supabase from "./superbase";
 
 
-export async function getBookings(){
-  const {data, error} = await supabase
+export async function getBookings({filter, sortBy}){
+  let query = supabase
   .from('bookings')
-  .select("*")
-  // .select("*, cabins(*), guests(*)")
+  .select("*,guests(fullName, email),cabins(name)")
+
+  //Api Filter
+  if(filter)query = query[filter.method || 'eq'](filter.field,filter.value,)
+
+    //Api Sorting
+    if(sortBy) query.order(sortBy.field,{ascending:sortBy.direction === 'asc'})
+
+  const {data, error} = await query
 
   if(error){
-    console.error(error)
+    console.error(error.message)
     throw new Error('Cabins bookings could not be found')
-}
-
+  }
+  
 return data;
 }
 export async function getBooking(id) {
