@@ -39,9 +39,15 @@ const FilterButton = styled.button`
 const Filter = ({filterField, options}) => {
  const [searchParams, setSearchParams] = useSearchParams() //using search params to get the url of the field
  const currentFilter = searchParams.get(filterField) || options.at(0).value
+
   function handleClick(value){
     searchParams.set(filterField, value) //Two augument **1/ field name **2/value
+
+    if(searchParams.get('page')){
+     searchParams.set('page', 1)
+    }
     setSearchParams(searchParams)  // updating searchParams into the new set params
+      
   }
   return (
     <StyledFilter>
