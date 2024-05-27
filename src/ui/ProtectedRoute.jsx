@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useUser } from "../features/authentication/useUser"
 import styled from "styled-components"
 import Spinner from "./Spinner"
+import supabase from "../services/superbase"
 
 
 const FullPage =  styled.div`
@@ -20,7 +21,7 @@ function ProtectedRoute({children}) {
 
     //2. If there is no aunthenticated user, redirect to login page
     useEffect(function(){
-        if(!isAuthenticated && isLoading){
+        if(!isAuthenticated && !isLoading){
             navigete('/login')
         }
     },[isAuthenticated,isLoading, navigete])
@@ -40,3 +41,4 @@ function ProtectedRoute({children}) {
 }
 
 export default ProtectedRoute
+

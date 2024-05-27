@@ -9,11 +9,8 @@ export function useLogin(){
     const {mutate:loginFn, isLoading} = useMutation({
         mutationFn:({email, password})=>login({email, password}),
         onSuccess:(user)=>{
-            queryClient.setQueryData({
-                queryKey:['user'],
-                user
-            })
-            navigate('/')
+            queryClient.setQueryData(['user'], user.user)
+            navigate('/', {replace:true})
         },
         onError:(err)=>{
             toast.error('The provided email or password are incorrect')
