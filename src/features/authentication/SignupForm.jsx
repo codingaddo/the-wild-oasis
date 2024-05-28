@@ -70,6 +70,7 @@ function SignupForm() {
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset" 
         disabeled={isLoading}
+        onClick={reset}
         >
           Cancel
         </Button>
