@@ -58,7 +58,7 @@ const variations = {
 `;
 
 Button.defaultProps = {
-  size: "medium",
+  size: "small",
   variation: "primary",
 };
 

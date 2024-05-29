@@ -16,12 +16,11 @@ const StyledSidebar = styled.aside`
 `
 
 const SideBar = () => {
-  const {isLoadin,cabins} = useCabin()
   return (
     <StyledSidebar>
             <Logo/>
             <MainNav/>
-            {/* <Uploader/> */}
+            <Uploader/>
     </StyledSidebar>
   )
 }

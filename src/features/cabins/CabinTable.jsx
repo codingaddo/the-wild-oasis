@@ -16,8 +16,8 @@ const CabinTable = () => {
 
   const {isLoading, cabins} = useCabin()
   const [searchParams] = useSearchParams() // using search params hook to get the url of the cabins
-  
   if(isLoading) return <Spinner/>
+  
   
   //1. For filtering
   const filterValue = searchParams.get('discount') || 'all' // getting the url or field name

@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import Heading from "../../ui/Heading";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
@@ -84,7 +87,7 @@ const startDataDark = [
   },
   {
     duration: "6-7 nights",
-    value: 0,
+    value:0,
     color: "#15803d",
   },
   {
@@ -130,3 +133,48 @@ function prepareData(startData, stays) {
 
   return data;
 }
+
+
+function DurationChart({confirmedStays}) {
+  const {isDarkMode}  = useDarkMode()
+  const startData = isDarkMode? startDataDark : startDataLight
+  const data = prepareData(startData, confirmedStays)
+  return (
+  <ChartBox>
+    <Heading as={'h2'}>Stays Duration Summary</Heading>
+    <ResponsiveContainer width={'100%'} height={240}>
+      <PieChart>
+        <Pie 
+        data={data}
+         nameKey={'duration'}
+          dataKey={'value'}
+          innerRadius={70}
+          outerRadius={90}
+          cx={'40%'}
+          cy={'50%'}
+          paddingAngle={5}
+          
+          >
+            {data.map(entery=><Cell 
+            fill={entery.color}
+             stroke={entery.color} 
+             key={entery.duration}
+             />)}
+          </Pie>
+             <Legend
+             verticalAlign="middle"
+             align="right"
+             width={'35%'}
+             layout="vertical"
+             iconSize={'15'}
+             iconType="circle"
+             />
+             <Tooltip/>
+      </PieChart>
+    </ResponsiveContainer>
+
+  </ChartBox>
+  )
+}
+
+export default DurationChart
