@@ -18,6 +18,7 @@ import { useDeleteBooking } from "./useDeleteBooking";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useState } from "react";
+import Empty from "../../ui/Empty";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ function BookingDetail() {
 
 
   if(isLoading) return <Spinner/>
+  if(!bookingId) return<Empty resourceName={'booking'}/>
 
   const statusToTagName = {
     unconfirmed: "blue",
