@@ -99,6 +99,8 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
+
+
 export async function updateBooking(id, obj) {
   const { data, error } = await supabase
     .from("bookings")
@@ -108,7 +110,7 @@ export async function updateBooking(id, obj) {
     .single();
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not be updated");
   }
   return data;
@@ -119,7 +121,7 @@ export async function deleteBooking(id) {
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not be deleted");
   }
   return data;
